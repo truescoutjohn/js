@@ -1,7 +1,8 @@
 //input: undefined
 //output: undefined
-const finishList = () => {
-  const ul = document.createElement('ul');
+export const finishList = () => {
+  const ul = document.querySelector('.list');
+  const special = document.querySelector('.special');
 
   const li1 = document.createElement('li');
   li1.textContent = 1;
@@ -13,13 +14,11 @@ const finishList = () => {
 
   const li2 = document.createElement('li');
   li2.textContent = 4;
-  li4.before(li2);
+  special.before(li2);
 
   const li3 = document.createElement('li');
   li3.textContent = 6;
-  li2.after(li3);
-
-  document.querySelector('body').append(ul);
+  special.after(li3);
 };
 
 finishList();
