@@ -1,5 +1,5 @@
-//input: undefined
-//output: undefined
+// input: undefined
+// output: undefined
 export const finishForm = () => {
   const input = document.createElement('input');
   input.setAttribute('name', 'login');

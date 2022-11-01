@@ -1,5 +1,5 @@
-//algo
-//Find -> create handlers -> add event to every element according to task
+// algo
+// Find -> create handlers -> add event to every element according to task
 const divElement = document.querySelector('.rect_div');
 const pElement = document.querySelector('.rect_p');
 const spanElement = document.querySelector('.rect_span');
