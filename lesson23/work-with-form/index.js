@@ -36,33 +36,25 @@ const behaviourForm = event => {
   alert(JSON.stringify(Object.fromEntries(new FormData(formElem))));
 };
 
+const isEmail = string => (!string.includes('@') ? 'Should be an email' : false);
+
+const isRequired = string => (!string ? 'Required' : false);
+
 const errors = {
-  email: ['Required', 'Should be an email'],
-  password: ['Required'],
+  email: [isRequired, isEmail],
+  password: [isRequired],
 };
 
-const validateError = (element, key, type) => {
-  if (!element.value.length && type === errors[key][0]) {
-    return errors[key][0];
-  }
-  if (!element.value.includes('@') && type === errors[key][1]) {
-    return errors[key][1];
-  }
-  return false;
-};
-
-const keys = Object.keys(formData);
+const validateError = (field, element) =>
+  errors[field]
+    .map(validator => validator(element.value))
+    .filter(errorText => errorText)
+    .join(', ');
 
 const setErrors = event => {
   const span = event.target.parentElement.querySelector(`.error-text`);
-  const key = keys.find(key => {
-    const classNameSpan = span.classList.contains(`error-text_${key}`) ? key : '';
-    return classNameSpan.indexOf(key) !== -1;
-  });
-  const errorMessage = errors[key]
-    .map(type => validateError(event.target, key, type))
-    .filter(errorText => errorText)
-    .join(', ');
+  const inputType = event.target.type;
+  const errorMessage = validateError(inputType, event.target);
   span.textContent = errorMessage;
 };
 
