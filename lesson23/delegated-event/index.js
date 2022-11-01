@@ -13,6 +13,11 @@ const DEFAULT_SIZE_DIMENSION = 10;
 const DEFAULT_AMOUNT_SECTORS = 3;
 
 const clickHandler = event => {
+  const isSeat = event.target.classList.contains('sector__seat');
+  if (!isSeat) {
+    return;
+  }
+
   const seat = event.target;
   let place = `S ${seat.closest('.sector').dataset.number} - `;
   place += `L ${seat.closest('.sector__line').dataset.number}`;
@@ -49,7 +54,7 @@ const placeSectorsToArena = index => {
 
 const loadHandler = () => {
   placeSectorsToArena(DEFAULT_AMOUNT_SECTORS);
-  const seats = [...document.querySelectorAll('.sector__seat')];
+  const seats = [...document.querySelectorAll('.sector')];
   seats.forEach(seat => seat.addEventListener('click', clickHandler));
 };
 
