@@ -16,7 +16,7 @@ const clickHandler = event => {
   const seat = event.target;
   let place = `S ${seat.closest('.sector').dataset.number} - `;
   place += `L ${seat.closest('.sector__line').dataset.number}`;
-  place += `- S ${seat.dataset.number}`;
+  place += ` - S ${seat.dataset.number}`;
 
   document.querySelector('.board__selected-seat').textContent = place;
 };
