@@ -22,6 +22,15 @@ const formElem = document.querySelector('.login-form');
 const formData = getFormData(formElem);
 
 // более простой формат считывания формы - ВАРИАНТ 2:
+// const formData = Object.entries(new FormData(formElem));
+// algo
+// 0. Create array of keys of form field
+// 1. Create object error
+// 2. Get the span of appropriate input
+// 3. Find throught keys relevalent key
+// 4. Validate span value
+// 5. Filter and join to string our array
+// 6. Insert into span previous string
 const behaviourForm = event => {
   event.preventDefault();
   alert(JSON.stringify(Object.fromEntries(new FormData(formElem))));
