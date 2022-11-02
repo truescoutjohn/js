@@ -5,8 +5,7 @@ const getFormData = formElem => {
   // formFields => [["email", "значение поля email"], ["password", "значение поля password"]]
 
   return formFields.reduce(function (acc, formField) {
-    const prop = formField[0]; // здесь "name" инпута
-    const value = formField[1]; // здесь "value" инпута
+    const [prop, value] = formField; // здесь "name" инпута
     // если использовать деструктуризацию, то можно предыдущие 2 строки записать короче
     // const [prop, value] = formField;
     return {
