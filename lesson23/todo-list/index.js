@@ -13,6 +13,7 @@
 //   2.3. Paste in global state this object with right id and according done field (equivalent false)
 //   2.4. Call render method and do 1.3.1 - 1.3.4 steps
 // 3. All events should plugin to relevalent elements
+
 const tasks = [
   { id: '1', text: 'Buy milk', done: false },
   { id: '2', text: 'Pick up Tom from airport', done: false },
@@ -20,7 +21,8 @@ const tasks = [
   { id: '4', text: 'Visit doctor', done: true },
   { id: '5', text: 'Buy meat', done: true },
 ];
-// input: object
+
+// input: object, function
 // output: undefined
 const switchStateTaskHandler = (event, callbackRender) => {
   const checkbox = event.target;
@@ -44,15 +46,12 @@ const switchStateTaskWrapper = callbackRender => {
   };
 };
 
-let currentId = 5;
-
-// input: object
+// input: object, function
 // output: undefined
 const createNewTaskHandler = (event, callbackRender) => {
   const input = event.target.parentElement.querySelector('.task-input');
   if (input.value) {
-    currentId += 1;
-    tasks.push({ id: currentId.toString(), text: input.value, done: false });
+    tasks.push({ id: (tasks.length + 1).toString(), text: input.value, done: false });
     input.value = '';
   }
   callbackRender(tasks);
@@ -64,7 +63,7 @@ const createNewTaskWrapper = callbackRender => {
   };
 };
 
-// input: object, string
+// input: boolean, string
 // output: object
 const createListItem = (done, id) => {
   const listItemElem = document.createElement('li');
@@ -76,7 +75,7 @@ const createListItem = (done, id) => {
   return listItemElem;
 };
 
-// input: boolean
+// input: boolean, function
 // output: object
 function createCheckbox(done, eventHandler) {
   const checkbox = document.createElement('input');
@@ -87,7 +86,7 @@ function createCheckbox(done, eventHandler) {
   return checkbox;
 }
 
-// input: object
+// input: array
 // output: undefined
 const renderTasks = tasksList => {
   const listElem = document.querySelector('.list');
