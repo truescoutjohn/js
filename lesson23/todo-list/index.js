@@ -13,9 +13,97 @@
 //   2.3. Paste in global state this object with right id and according done field (equivalent false)
 //   2.4. Call render method and do 1.3.1 - 1.3.4 steps
 // 3. All events should plugin to relevalent elements
-import { renderTasks } from './renderTasks.js';
-import { tasks } from './tasks.js';
-import { createNewTaskWrapper } from './eventsHandler.js';
+const tasks = [
+  { id: '1', text: 'Buy milk', done: false },
+  { id: '2', text: 'Pick up Tom from airport', done: false },
+  { id: '3', text: 'Visit party', done: false },
+  { id: '4', text: 'Visit doctor', done: true },
+  { id: '5', text: 'Buy meat', done: true },
+];
+// input: object
+// output: undefined
+const switchStateTaskHandler = (event, callbackRender) => {
+  const checkbox = event.target;
+  const listItemElem = event.target.closest('.list__item');
+  const task = tasks.find(({ id }) => id === listItemElem.dataset.id);
+  task.done = !task.done;
+  listItemElem.classList.toggle('list__item_done');
+  if (task.done) {
+    checkbox.setAttribute('checked', '');
+  } else {
+    checkbox.removeAttribute('checked');
+  }
+  callbackRender(tasks);
+};
+
+// input: function
+// ouput: function
+const switchStateTaskWrapper = callbackRender => {
+  return function (event) {
+    switchStateTaskHandler(event, callbackRender);
+  };
+};
+
+let currentId = 5;
+
+// input: object
+// output: undefined
+const createNewTaskHandler = (event, callbackRender) => {
+  const input = event.target.parentElement.querySelector('.task-input');
+  if (input.value) {
+    currentId += 1;
+    tasks.push({ id: currentId.toString(), text: input.value, done: false });
+    input.value = '';
+  }
+  callbackRender(tasks);
+};
+
+const createNewTaskWrapper = callbackRender => {
+  return function (event) {
+    createNewTaskHandler(event, callbackRender);
+  };
+};
+
+// input: object, string
+// output: object
+const createListItem = (done, id) => {
+  const listItemElem = document.createElement('li');
+  listItemElem.classList.add('list__item');
+  if (done) {
+    listItemElem.classList.add('list__item_done');
+  }
+  listItemElem.dataset.id = id;
+  return listItemElem;
+};
+
+// input: boolean
+// output: object
+function createCheckbox(done, eventHandler) {
+  const checkbox = document.createElement('input');
+  checkbox.setAttribute('type', 'checkbox');
+  checkbox.checked = done;
+  checkbox.classList.add('list__item-checkbox');
+  checkbox.addEventListener('change', eventHandler);
+  return checkbox;
+}
+
+// input: object
+// output: undefined
+const renderTasks = tasksList => {
+  const listElem = document.querySelector('.list');
+  listElem.innerHTML = '';
+
+  const tasksElems = tasksList
+    .sort((a, b) => a.done - b.done)
+    .map(({ id, text, done }) => {
+      const listItemElem = createListItem(done, id);
+      const checkbox = createCheckbox(done, switchStateTaskWrapper(renderTasks));
+      listItemElem.append(checkbox, text);
+      return listItemElem;
+    });
+
+  listElem.append(...tasksElems);
+};
 
 // input: undefined
 // output: undefined
