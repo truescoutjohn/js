@@ -15,11 +15,11 @@
 // 3. All events should plugin to relevalent elements
 
 const tasks = [
-  { id: '1', text: 'Buy milk', done: false },
-  { id: '2', text: 'Pick up Tom from airport', done: false },
-  { id: '3', text: 'Visit party', done: false },
-  { id: '4', text: 'Visit doctor', done: true },
-  { id: '5', text: 'Buy meat', done: true },
+  { id: '1', text: 'Buy milk', done: false, date: new Date(1900, 1, 1) },
+  { id: '2', text: 'Pick up Tom from airport', done: false, date: new Date(1900, 1, 5) },
+  { id: '3', text: 'Visit party', done: false, date: new Date(1900, 1, 4) },
+  { id: '4', text: 'Visit doctor', done: true, date: new Date(1900, 1, 3) },
+  { id: '5', text: 'Buy meat', done: true, date: new Date(1900, 1, 2) },
 ];
 
 // input: object, function
@@ -27,15 +27,17 @@ const tasks = [
 const switchStateTaskHandler = (event, callbackRender) => {
   const checkbox = event.target;
   const listItemElem = event.target.closest('.list__item');
+  listItemElem.classList.toggle('list__item_done');
   const task = tasks.find(({ id }) => id === listItemElem.dataset.id);
   task.done = !task.done;
-  listItemElem.classList.toggle('list__item_done');
+  task.date = new Date();
   if (task.done) {
     checkbox.setAttribute('checked', '');
   } else {
     checkbox.removeAttribute('checked');
   }
   callbackRender(tasks);
+  console.log(tasks);
 };
 
 // input: function
@@ -51,10 +53,16 @@ const switchStateTaskWrapper = callbackRender => {
 const createNewTaskHandler = (event, callbackRender) => {
   const input = event.target.parentElement.querySelector('.task-input');
   if (input.value) {
-    tasks.push({ id: (tasks.length + 1).toString(), text: input.value, done: false });
+    tasks.push({
+      id: (tasks.length + 1).toString(),
+      text: input.value,
+      done: false,
+      date: new Date(),
+    });
     input.value = '';
   }
   callbackRender(tasks);
+  console.log(tasks);
 };
 
 // input: function
@@ -95,7 +103,21 @@ const renderTasks = tasksList => {
   listElem.innerHTML = '';
 
   const tasksElems = tasksList
-    .sort((a, b) => a.done - b.done)
+    .sort((task1, task2) => {
+      if (task1.done === task2.done) {
+        if (task1.date < task2.date) {
+          return 1;
+        }
+        if (task1.date > task2.date) {
+          return -1;
+        }
+        return 0;
+      }
+      if (task1.done < task2.done) {
+        return -1;
+      }
+      return 1;
+    })
     .map(({ id, text, done }) => {
       const listItemElem = createListItem(done, id);
       const checkbox = createCheckbox(done, switchStateTaskWrapper(renderTasks));
