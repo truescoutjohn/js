@@ -103,21 +103,9 @@ const renderTasks = tasksList => {
   listElem.innerHTML = '';
 
   const tasksElems = tasksList
-    .sort((task1, task2) => {
-      if (task1.done === task2.done) {
-        if (task1.date < task2.date) {
-          return 1;
-        }
-        if (task1.date > task2.date) {
-          return -1;
-        }
-        return 0;
-      }
-      if (task1.done < task2.done) {
-        return -1;
-      }
-      return 1;
-    })
+    .sort((task1, task2) =>
+      task1.done === task2.done ? task2.date - task1.date : task1.done - task2.done,
+    )
     .map(({ id, text, done }) => {
       const listItemElem = createListItem(done, id);
       const checkbox = createCheckbox(done, switchStateTaskWrapper(renderTasks));
@@ -136,5 +124,7 @@ const initializeTodoHandler = () => {
     .querySelector('.create-task-btn')
     .addEventListener('click', createNewTaskWrapper(renderTasks));
 };
+
+initializeTodoHandler();
 
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);
