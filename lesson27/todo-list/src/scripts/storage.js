@@ -23,9 +23,10 @@ export const getTasksLength = () => {
 
 // input: number, boolean
 // ouput: undefined
-export const changeTaskState = (objId, state) => {
+export const changeTaskState = (objId, state, date) => {
   const tasks = getTasks(KEY_TASKS);
   const task = tasks.find(({ id }) => id === objId);
   task.done = state;
+  task.date = date;
   localStorage.setItem(KEY_TASKS, JSON.stringify(tasks));
 };
