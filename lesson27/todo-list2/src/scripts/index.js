@@ -27,6 +27,6 @@ const initializeTodoHandler = () => {
 };
 
 const onStorageChange = event => renderTasks(getTasks(KEY_TASKS));
-
+initializeTodoHandler();
 window.addEventListener('storage', onStorageChange);
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);
