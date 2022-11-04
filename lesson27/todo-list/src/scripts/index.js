@@ -30,3 +30,4 @@ const onStorageChange = event => renderTasks();
 window.addEventListener('storage', onStorageChange);
 
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);
+initializeTodoHandler();
