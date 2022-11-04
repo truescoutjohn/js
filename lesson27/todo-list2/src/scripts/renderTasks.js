@@ -19,7 +19,7 @@ const createCheckbox = (done, eventHandler) => {
   checkbox.setAttribute('type', 'checkbox');
   checkbox.checked = done;
   checkbox.classList.add('list__item-checkbox');
-  checkbox.addEventListener('change', eventHandler);
+  checkbox.addEventListener('click', eventHandler);
   return checkbox;
 };
 
