@@ -1,6 +1,6 @@
 import { addImage } from './addImage.js';
 
-const addImageV2 = url => {
+export const addImageV2 = url => {
   return new Promise((resolve, reject) => {
     try {
       addImage(url, resolve);
