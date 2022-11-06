@@ -22,59 +22,70 @@ const tasks = [
   { id: '5', text: 'Buy meat', done: true, date: new Date(1900, 1, 2) },
 ];
 
-// input: object, function
+// input: dom element
 // output: undefined
-const switchStateTaskHandler = (event, callbackRender) => {
-  const checkbox = event.target;
-  const listItemElem = event.target.closest('.list__item');
-  listItemElem.classList.toggle('list__item_done');
+const _updateTask = listItemElem => {
   const task = tasks.find(({ id }) => id === listItemElem.dataset.id);
   task.done = !task.done;
   task.date = new Date();
-  if (task.done) {
+  return task.done;
+};
+
+// input: object, function
+// output: boolean
+const updateStateTaskHandler = (event, callbackRender) => {
+  if (!event.target.classList.contains('list__item-checkbox')) {
+    return false;
+  }
+  const checkbox = event.target;
+  const listItemElem = event.target.closest('.list__item');
+  listItemElem.classList.toggle('list__item_done');
+  const done = _updateTask(listItemElem);
+  if (done) {
     checkbox.setAttribute('checked', '');
   } else {
     checkbox.removeAttribute('checked');
   }
   callbackRender(tasks);
-  console.log(tasks);
+  return true;
 };
 
 // input: function
 // ouput: function
-const switchStateTaskWrapper = callbackRender => {
+const updateStateTask = callbackRender => {
   return function (event) {
-    switchStateTaskHandler(event, callbackRender);
+    updateStateTaskHandler(event, callbackRender);
   };
 };
 
-// input: object, function
-// output: undefined
+// input: event, function
+// output: boolean
 const createNewTaskHandler = (event, callbackRender) => {
   const input = event.target.parentElement.querySelector('.task-input');
-  if (input.value) {
-    tasks.push({
-      id: (tasks.length + 1).toString(),
-      text: input.value,
-      done: false,
-      date: new Date(),
-    });
-    input.value = '';
+  if (!input.value) {
+    return false;
   }
+  tasks.push({
+    id: (tasks.length + 1).toString(),
+    text: input.value,
+    done: false,
+    date: new Date(),
+  });
+  input.value = '';
   callbackRender(tasks);
-  console.log(tasks);
+  return true;
 };
 
 // input: function
 // output: function
-const createNewTaskWrapper = callbackRender => {
+const createNewTask = callbackRender => {
   return function (event) {
     createNewTaskHandler(event, callbackRender);
   };
 };
 
 // input: boolean, string
-// output: object
+// output: Dom element
 const createListItem = (done, id) => {
   const listItemElem = document.createElement('li');
   listItemElem.classList.add('list__item');
@@ -85,34 +96,37 @@ const createListItem = (done, id) => {
   return listItemElem;
 };
 
-// input: boolean, function
-// output: object
-function createCheckbox(done, eventHandler) {
+// input: boolean
+// output: Dom element
+function createCheckbox(done) {
   const checkbox = document.createElement('input');
   checkbox.setAttribute('type', 'checkbox');
   checkbox.checked = done;
   checkbox.classList.add('list__item-checkbox');
-  // should be event 'change' but test won't be passed
-  checkbox.addEventListener('click', eventHandler);
   return checkbox;
 }
 
-// input: array
-// output: undefined
-const renderTasks = tasksList => {
-  const listElem = document.querySelector('.list');
-  listElem.innerHTML = '';
-
-  const tasksElems = tasksList
+// input: array<dom element>
+// output: array<dom element>
+const _formatTasks = tasksList =>
+  tasksList
     .sort((task1, task2) =>
       task1.done === task2.done ? task2.date - task1.date : task1.done - task2.done,
     )
     .map(({ id, text, done }) => {
       const listItemElem = createListItem(done, id);
-      const checkbox = createCheckbox(done, switchStateTaskWrapper(renderTasks));
+      const checkbox = createCheckbox(done);
       listItemElem.append(checkbox, text);
       return listItemElem;
     });
+
+// input: array<dom element>
+// output: undefined
+const renderTasks = tasksList => {
+  const listElem = document.querySelector('.list');
+  listElem.innerHTML = '';
+
+  const tasksElems = _formatTasks(tasksList);
 
   listElem.append(...tasksElems);
 };
@@ -121,11 +135,8 @@ const renderTasks = tasksList => {
 // output: undefined
 const initializeTodoHandler = () => {
   renderTasks(tasks);
-  document
-    .querySelector('.create-task-btn')
-    .addEventListener('click', createNewTaskWrapper(renderTasks));
+  document.querySelector('.list').addEventListener('click', updateStateTask(renderTasks));
+  document.querySelector('.create-task-btn').addEventListener('click', createNewTask(renderTasks));
 };
-
-initializeTodoHandler();
 
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);

@@ -1,15 +1,18 @@
-export const addImage = (imgSrc, callback) => {
+const _createImage = (imgSrc, callback) => {
   const imgElem = document.createElement('img');
   imgElem.setAttribute('alt', 'My Photo');
   imgElem.src = imgSrc;
-  const container = document.querySelector('.page');
-  container.append(imgElem);
   imgElem.addEventListener('load', event => {
     callback(null, imgElem);
   });
   imgElem.addEventListener('error', event => {
     callback('Image load is failed');
   });
+};
+export const addImage = (imgSrc, callback) => {
+  const imgElem = _createImage(imgSrc, callback);
+  const container = document.querySelector('.page');
+  container.append(imgElem);
 };
 
 // callack function

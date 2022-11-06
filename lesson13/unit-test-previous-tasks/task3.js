@@ -4,12 +4,12 @@ export const getAdults = obj => {
     return {};
   }
 
-  const resultObject = Object.assign({}, obj);
-  for (const key in resultObject) {
+  const resultObject = { ...obj };
+  Object.keys(resultObject).forEach(key => {
     if (resultObject[key] < ADULT_AGE) {
       delete resultObject[key];
     }
-  }
+  });
 
   return resultObject;
 };

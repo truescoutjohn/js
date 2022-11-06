@@ -29,7 +29,7 @@ const clickHandler = event => {
 const generateArray = number => {
   return Array(number)
     .fill()
-    .map((element, index) => index + 1);
+    .map((_, index) => index + 1);
 };
 
 const createCell = index => `<div data-number=${index} class="sector__seat"></div>`;

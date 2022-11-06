@@ -13,19 +13,19 @@
 //   2.3. Paste in global state this object with right id and according done field (equivalent false)
 //   2.4. Call render method and do 1.3.1 - 1.3.4 steps
 // 3. All events should plugin to relevalent elements
-import { createNewTaskWrapper } from './createTask.js';
+import { createNewTask } from './createTask.js';
+import { updateStateTask } from './updateTask.js';
 import { renderTasks } from './renderTasks.js';
 
 // input: undefined
 // output: undefined
 const initializeTodoHandler = () => {
   renderTasks();
-  document
-    .querySelector('.create-task-btn')
-    .addEventListener('click', createNewTaskWrapper(renderTasks));
+  document.querySelector('.create-task-btn').addEventListener('click', createNewTask(renderTasks));
+  document.querySelector('.list').addEventListener('click', updateStateTask(renderTasks));
 };
 
-const onStorageChange = event => renderTasks();
+const onStorageChange = _ => renderTasks();
 
 window.addEventListener('storage', onStorageChange);
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);

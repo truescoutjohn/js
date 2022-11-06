@@ -7,4 +7,4 @@ export const finishForm = () => {
   document.querySelector('input[name=password]').setAttribute('type', 'password');
 };
 
-finishForm();
+document.addEventListener('DOMcontentLoaded', finishForm);

@@ -20,7 +20,7 @@ const createNewTaskHandler = (event, callbackRender) => {
 
 // input: function
 // output: function
-export const createNewTaskWrapper = callbackRender => {
+export const createNewTask = callbackRender => {
   return function (event) {
     createNewTaskHandler(event, callbackRender);
   };

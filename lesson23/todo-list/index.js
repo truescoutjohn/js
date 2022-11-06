@@ -22,9 +22,9 @@ const tasks = [
   { id: '5', text: 'Buy meat', done: true },
 ];
 
-// input: object, function
+// input: event, function
 // output: undefined
-const switchStateTaskHandler = (event, callbackRender) => {
+const updateStateTaskHandler = (event, callbackRender) => {
   const checkbox = event.target;
   const listItemElem = event.target.closest('.list__item');
   const task = tasks.find(({ id }) => id === listItemElem.dataset.id);
@@ -40,13 +40,13 @@ const switchStateTaskHandler = (event, callbackRender) => {
 
 // input: function
 // ouput: function
-const switchStateTaskWrapper = callbackRender => {
+const updateStateTask = callbackRender => {
   return function (event) {
-    switchStateTaskHandler(event, callbackRender);
+    updateStateTaskHandler(event, callbackRender);
   };
 };
 
-// input: object, function
+// input: event, function
 // output: undefined
 const createNewTaskHandler = (event, callbackRender) => {
   const input = event.target.parentElement.querySelector('.task-input');
@@ -59,14 +59,14 @@ const createNewTaskHandler = (event, callbackRender) => {
 
 // input: function
 // output: function
-const createNewTaskWrapper = callbackRender => {
+const createNewTask = callbackRender => {
   return function (event) {
     createNewTaskHandler(event, callbackRender);
   };
 };
 
 // input: boolean, string
-// output: object
+// output: dom element
 const createListItem = (done, id) => {
   const listItemElem = document.createElement('li');
   listItemElem.classList.add('list__item');
@@ -78,7 +78,7 @@ const createListItem = (done, id) => {
 };
 
 // input: boolean, function
-// output: object
+// output: dom element
 function createCheckbox(done, eventHandler) {
   const checkbox = document.createElement('input');
   checkbox.setAttribute('type', 'checkbox');
@@ -88,17 +88,17 @@ function createCheckbox(done, eventHandler) {
   return checkbox;
 }
 
-// input: array
+// input: array<dom element>
 // output: undefined
 const renderTasks = tasksList => {
   const listElem = document.querySelector('.list');
   listElem.innerHTML = '';
 
   const tasksElems = tasksList
-    .sort((a, b) => a.done - b.done)
+    .sort((task1, task2) => task1.done - task2.done)
     .map(({ id, text, done }) => {
       const listItemElem = createListItem(done, id);
-      const checkbox = createCheckbox(done, switchStateTaskWrapper(renderTasks));
+      const checkbox = createCheckbox(done, updateStateTask(renderTasks));
       listItemElem.append(checkbox, text);
       return listItemElem;
     });
@@ -110,9 +110,7 @@ const renderTasks = tasksList => {
 // output: undefined
 const initializeTodoHandler = () => {
   renderTasks(tasks);
-  document
-    .querySelector('.create-task-btn')
-    .addEventListener('click', createNewTaskWrapper(renderTasks));
+  document.querySelector('.create-task-btn').addEventListener('click', createNewTask(renderTasks));
 };
 
 document.addEventListener('DOMContentLoaded', initializeTodoHandler);

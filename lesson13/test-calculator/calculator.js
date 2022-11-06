@@ -3,22 +3,24 @@ export const calc = expression => {
     return null;
   }
 
-  const [a, operation, b] = expression.split(' ');
+  const [operand1, operation, operand2] = expression.split(' ');
   let result;
 
   switch (operation) {
     case '+':
-      result = +a + +b;
+      result = Number(operand1) + Number(operand2);
       break;
     case '-':
-      result = +a - +b;
+      result = Number(operand1) - Number(operand2);
       break;
     case '*':
-      result = +a * +b;
+      result = Number(operand1) * Number(operand2);
       break;
     case '/':
-      result = +a / +b;
+      result = Number(operand1) / Number(operand2);
       break;
+    default:
+      console.error(new Error('Something goes wrong'));
   }
 
   return `${expression} = ${result}`;

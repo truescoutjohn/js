@@ -6,23 +6,37 @@ const tasks = [
   { text: 'Buy meat', done: true },
 ];
 
+// input: boolean
+// ouput: object
+const createCheckbox = done => {
+  const checkbox = document.createElement('input');
+  checkbox.setAttribute('type', 'checkbox');
+  checkbox.checked = done;
+  return checkbox;
+};
+
+// input: string, boolean
+// output: object
+const createLi = (text, done) => {
+  const li = document.createElement('li');
+  li.classList.add('list__item');
+
+  if (done) {
+    li.classList.add('list__item_done');
+  }
+
+  li.textContent = text;
+  return li;
+};
+
 /**
  * @param {object[]} tasksList
  * @return {undefined}
  */
 const renderTasks = tasksList => {
   const elementsTasks = tasksList.map(({ text, done }) => {
-    const li = document.createElement('li');
-    li.classList.add('list__item');
-
-    if (done) {
-      li.classList.add('list__item_done');
-    }
-
-    li.textContent = text;
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    checkbox.checked = done;
+    const checkbox = createCheckbox(done);
+    const li = createLi(text, done);
     li.prepend(checkbox);
     return li;
   });

@@ -1,4 +1,4 @@
-import { updateStateTaskWrapper } from './updateTask.js';
+import { updateStateTask } from './updateTask.js';
 import { getTasks, KEY_TASKS } from './storage.js';
 
 // input: boolean, string
@@ -21,7 +21,7 @@ function createCheckbox(done, eventHandler) {
   checkbox.checked = done;
   checkbox.classList.add('list__item-checkbox');
   // should be event 'change' but test won't be passed
-  checkbox.addEventListener('click', eventHandler);
+  // checkbox.addEventListener('click', eventHandler);
   return checkbox;
 }
 
@@ -37,7 +37,7 @@ export const renderTasks = () => {
     )
     .map(({ id, text, done }) => {
       const listItemElem = createListItem(done, id);
-      const checkbox = createCheckbox(done, updateStateTaskWrapper(renderTasks));
+      const checkbox = createCheckbox(done, updateStateTask(renderTasks));
       listItemElem.append(checkbox, text);
       return listItemElem;
     });
