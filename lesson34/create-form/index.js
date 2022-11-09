@@ -1,17 +1,28 @@
+// algo
+// 1. Validate form and unblock button
+// 2. On submit
+//   2.1. Prevent default behavior
+//   2.2. Create form data
+//   2.3. Make fetch request
+// 3. Add event to inputs and form
 const _baseUrl = 'https://636a8bfbc07d8f936da160be.mockapi.io/api/v1/users';
 
 const _form = document.forms[0];
+const _FIELDS_FORM_AMOUNT = [..._form.querySelectorAll('input')].length;
 const _statesValidationForm = {};
 
 const _onInput = event => {
   if (event.target.reportValidity()) {
     _statesValidationForm[event.target.name] = true;
-  } else if (Object.values(_statesValidationForm).all(item => item === true)) {
-    document
-      .querySelector('button')
-      .setAttribute('disabled', _statesValidationForm[event.target.name]);
   } else {
-    _statesValidationForm[event.target.name] = !_statesValidationForm[event.target.name];
+    _statesValidationForm[event.target.name] = false;
+  }
+  const states = Object.values(_statesValidationForm);
+  const button = document.querySelector('button');
+  if (states.every(item => item) && states.length === _FIELDS_FORM_AMOUNT) {
+    button.setAttribute('disabled', true);
+  } else {
+    button.setAttribute('disabled', false);
   }
 };
 
