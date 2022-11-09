@@ -43,4 +43,5 @@ const initHandlers = () => {
   _form.addEventListener('submit', _onSubmitForm);
 };
 
-document.addEventListener('DOMContentLoaded', initHandlers);
+// document.addEventListener('DOMContentLoaded', initHandlers);
+initHandlers();
