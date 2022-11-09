@@ -16,3 +16,5 @@ getTasksList().then(tasksList => {
 getTaskById('2').then(taskData => {
   console.log(taskData); // ==> { 'id': '2', 'text': 'District Communications Specialist', 'isDone': false, 'createdDate': 1651499052, 'finishedDate': 1651499052 }
 });
+const id = 100476439;
+const token = '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';
