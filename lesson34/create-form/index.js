@@ -20,9 +20,9 @@ const _onInput = event => {
   const states = Object.values(_statesValidationForm);
   const button = document.querySelector('button');
   if (states.every(item => item) && states.length === _FIELDS_FORM_AMOUNT) {
-    button.setAttribute('disabled', true);
+    button.removeAttribute('disabled');
   } else {
-    button.setAttribute('disabled', false);
+    button.setAttribute('disabled', '');
   }
 };
 
