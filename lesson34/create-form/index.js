@@ -1,14 +1,17 @@
 const _baseUrl = 'https://636a8bfbc07d8f936da160be.mockapi.io/api/v1/users';
 
 const _form = document.forms[0];
-const _FIELDS_FORM_AMOUNT = [..._form.querySelectorAll('input')].length;
 const _statesValidationForm = {};
 
 const _onInput = event => {
-  if (Object.keys(_statesValidationForm).length === _FIELDS_FORM_AMOUNT) {
-    document.querySelector('button').setAttribute('disabled', false);
-  } else if (event.target.reportValidity()) {
+  if (event.target.reportValidity()) {
     _statesValidationForm[event.target.name] = true;
+  } else if (Object.values(_statesValidationForm).all(item => item === true)) {
+    document
+      .querySelector('button')
+      .setAttribute('disabled', _statesValidationForm[event.target.name]);
+  } else {
+    _statesValidationForm[event.target.name] = !_statesValidationForm[event.target.name];
   }
 };
 
