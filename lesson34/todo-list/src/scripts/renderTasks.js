@@ -46,7 +46,7 @@ const createSpan = (done, text) => {
 // ouput: dom element
 const fillListItem = (done, id, text) => {
   const listItemElem = createListItem(done, id);
-  const checkbox = createCheckbox(done, updateStateTask(renderTasks));
+  const checkbox = createCheckbox(done);
   const deleteButton = createDeleteButton();
   const textElement = createSpan(done, text);
   listItemElem.append(checkbox, textElement, deleteButton);
