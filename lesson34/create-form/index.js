@@ -6,7 +6,7 @@ const _statesValidationForm = {};
 
 const _onInput = event => {
   if (Object.keys(_statesValidationForm).length === _FIELDS_FORM_AMOUNT) {
-    document.querySelector('button').removeAttribute('disabled');
+    document.querySelector('button').setAttribute('disabled', false);
   } else if (event.target.reportValidity()) {
     _statesValidationForm[event.target.name] = true;
   }
