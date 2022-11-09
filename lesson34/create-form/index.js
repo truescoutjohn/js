@@ -11,19 +11,27 @@ const _form = document.forms[0];
 const _FIELDS_FORM_AMOUNT = [..._form.querySelectorAll('input')].length;
 const _statesValidationForm = {};
 
-const _onInput = event => {
-  if (event.target.reportValidity()) {
-    _statesValidationForm[event.target.name] = true;
+const _setValideFlagToObject = input => {
+  if (input.reportValidity()) {
+    _statesValidationForm[input.name] = true;
   } else {
-    _statesValidationForm[event.target.name] = false;
+    _statesValidationForm[input.name] = false;
   }
-  const states = Object.values(_statesValidationForm);
-  const button = document.querySelector('button');
+};
+
+const _setButtonDisabled = (button, states) => {
   if (states.every(item => item) && states.length === _FIELDS_FORM_AMOUNT) {
     button.removeAttribute('disabled');
   } else {
     button.setAttribute('disabled', '');
   }
+};
+
+const _onInput = event => {
+  _setValideFlagToObject(event.target);
+  const states = Object.values(_statesValidationForm);
+  const button = document.querySelector('button');
+  _setButtonDisabled(button, states);
 };
 
 const _createUser = data =>
@@ -33,7 +41,7 @@ const _createUser = data =>
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(data),
-  });
+  }).then(response => response.json());
 
 const _onSubmitForm = event => {
   event.preventDefault();
@@ -42,12 +50,11 @@ const _onSubmitForm = event => {
     (acc, item) => ({ ...acc, [item[0]]: item[1] }),
     {},
   );
-  _createUser(data)
-    .then(response => response.json())
-    .then(task => {
-      event.target.reset();
-      alert(JSON.stringify(task));
-    });
+
+  _createUser(data).then(task => {
+    event.target.reset();
+    alert(JSON.stringify(task));
+  });
 };
 
 const initHandlers = () => {
