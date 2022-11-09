@@ -28,10 +28,12 @@ const _onSubmitForm = event => {
     (acc, item) => ({ ...acc, [item[0]]: item[1] }),
     {},
   );
-  _createUser(data).then(response => {
-    event.target.reset();
-    console.log(`Status of response ${response.status}`);
-  });
+  _createUser(data)
+    .then(response => response.json())
+    .then(task => {
+      event.target.reset();
+      alert(JSON.stringify(task));
+    });
 };
 
 const initHandlers = () => {
