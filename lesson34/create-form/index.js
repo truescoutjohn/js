@@ -7,11 +7,12 @@
 // 3. Add event to inputs and form
 const _baseUrl = 'https://636a8bfbc07d8f936da160be.mockapi.io/api/v1/users';
 
-const _form = document.forms[0];
-const _FIELDS_FORM_AMOUNT = [..._form.querySelectorAll('input')].length;
+const _form = document.querySelector('.login-form');
+const _FIELDS_FORM_AMOUNT = _form.querySelectorAll('.form-input').length;
 const _statesValidationForm = {};
+const _button = document.querySelector('.submit-button');
 
-const _setValideFlagToObject = input => {
+const _setValidationFlagToObject = input => {
   if (input.reportValidity()) {
     _statesValidationForm[input.name] = true;
   } else {
@@ -28,10 +29,9 @@ const _setButtonDisabled = (button, states) => {
 };
 
 const _onInput = event => {
-  _setValideFlagToObject(event.target);
+  _setValidationFlagToObject(event.target);
   const states = Object.values(_statesValidationForm);
-  const button = document.querySelector('button');
-  _setButtonDisabled(button, states);
+  _setButtonDisabled(_button, states);
 };
 
 const _createUser = data =>
@@ -54,11 +54,12 @@ const _onSubmitForm = event => {
   _createUser(data).then(task => {
     event.target.reset();
     alert(JSON.stringify(task));
+    _button.setAttribute('disabled', '');
   });
 };
 
 const initHandlers = () => {
-  [..._form.querySelectorAll('input')].forEach(element =>
+  [..._form.querySelectorAll('.form-input')].forEach(element =>
     element.addEventListener('input', _onInput),
   );
   _form.addEventListener('submit', _onSubmitForm);
