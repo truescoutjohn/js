@@ -43,6 +43,11 @@ const _createUser = data =>
     body: JSON.stringify(data),
   }).then(response => response.json());
 
+const _resetFlagsObject = () => {
+  Object.keys(_statesValidationForm).forEach(key => {
+    _statesValidationForm[key] = false;
+  });
+};
 const _onSubmitForm = event => {
   event.preventDefault();
 
@@ -55,6 +60,7 @@ const _onSubmitForm = event => {
     event.target.reset();
     alert(JSON.stringify(task));
     _button.setAttribute('disabled', '');
+    _resetFlagsObject();
   });
 };
 
