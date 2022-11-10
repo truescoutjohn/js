@@ -31,7 +31,7 @@ const onSearchUser = () => {
     })
     .then(url => fetchRepositories(url))
     .then(reposList => renderRepos(reposList))
-    .catch(error => alert(error.message))
+    .catch(error => alert('Failed to load data'))
     .finally(() => {
       hideSpinner();
     });
